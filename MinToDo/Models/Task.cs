@@ -12,11 +12,17 @@ namespace MinToDo.Models
         public string Title { get; set; }
         public bool IsDone { get; set; }
 
-        public Task(int id,string title, bool isDone)
+        public Task(int id,string title)
         {
             Id = id;
             Title = title;
-            IsDone = isDone;
+
         }
+
+        public Task(string title)
+        {
+            Title = title;
+        }
+        public Task() { }
     }
 }

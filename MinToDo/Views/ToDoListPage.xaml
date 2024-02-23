@@ -17,13 +17,16 @@
             </Grid.RowDefinitions>
             
             <ListBox Margin="2" Padding ="2" d:ItemsSource="{d:SampleData ItemCount=60}">
+                <ListBox.ItemsSource>
+                    <Binding Path="TaskListTitles"/>
+                </ListBox.ItemsSource>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock FontSize="15" Margin="0,0,0,3" Text="{Binding}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Button Margin ="2" Grid.Row="1" FontSize="18">New List</Button>
+            <Button Margin ="2" Grid.Row="1" FontSize="18" Click ="AddTaskListButton_Click">New List</Button>
         </Grid>
         <Grid Margin ="5">
 
@@ -34,10 +37,13 @@
             </Grid.RowDefinitions>
             <TextBlock Margin="2" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center">List Name</TextBlock>
             <ListBox x:Name="TaskList" Margin="2" Padding ="2" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalContentAlignment="Stretch">
+                <ListBox.ItemsSource>
+                    <Binding Path="CurrentTaskListTaskTitles"/>
+                </ListBox.ItemsSource>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <DockPanel LastChildFill="False">
-                            <TextBlock Text="{Binding}" FontSize="20" Padding="0,10,0,10"/>
+                            <TextBlock x:Name="taskTextBlock" Text="{Binding}" FontSize="20" Padding="0,10,0,10"/>
                             <Button FontSize="20" Width="30" Height="30" DockPanel.Dock="Right" VerticalContentAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Click="MarkTaskAsDoneButton_Click" Margin="0,0,8,0">✓</Button>
                         </DockPanel>
                             
