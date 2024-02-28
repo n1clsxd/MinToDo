@@ -2,8 +2,7 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:MinToDo"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:controllers="clr-namespace:MinToDo.Controllers" d:DataContext="{d:DesignInstance Type=controllers:TaskListController}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="test">
@@ -15,7 +14,7 @@
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="40"></RowDefinition>
             </Grid.RowDefinitions>
-            
+
             <ListBox Margin="2" Padding ="2" d:ItemsSource="{d:SampleData ItemCount=60}">
                 <ListBox.ItemsSource>
                     <Binding Path="TaskListTitles"/>
@@ -35,7 +34,7 @@
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="60"></RowDefinition>
             </Grid.RowDefinitions>
-            <TextBlock Margin="2" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center">List Name</TextBlock>
+            <TextBlock Text ="{Binding CurrentTaskListTitle}" Margin="2" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
             <ListBox x:Name="TaskList" Margin="2" Padding ="2" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalContentAlignment="Stretch">
                 <ListBox.ItemsSource>
                     <Binding Path="CurrentTaskListTaskTitles"/>
@@ -46,8 +45,8 @@
                             <TextBlock x:Name="taskTextBlock" Text="{Binding}" FontSize="20" Padding="0,10,0,10"/>
                             <Button FontSize="20" Width="30" Height="30" DockPanel.Dock="Right" VerticalContentAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Click="MarkTaskAsDoneButton_Click" Margin="0,0,8,0">✓</Button>
                         </DockPanel>
-                            
-                        
+
+
                     </DataTemplate>
                 </ListBox.ItemTemplate>
 

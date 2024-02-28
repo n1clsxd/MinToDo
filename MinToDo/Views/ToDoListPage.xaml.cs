@@ -24,12 +24,11 @@ namespace MinToDo
         public TaskListController TaskListController { get; set; }
 
 
-
         public ToDoListPage()
         {
             TaskListController = new TaskListController();
             DataContext = TaskListController;
-            InitializeComponent();
+            //InitializeComponent();
             
         }
 
@@ -44,32 +43,26 @@ namespace MinToDo
 
         private void AddTask()
         {
-            if (NewTaskTextBox.Text == string.Empty) return;
+            if (NewTaskTextBox.Text != string.Empty)
+            {
+                TaskListController.AddTask(TaskListController.CurrentTaskList, NewTaskTextBox.Text);
 
-
-            //TaskList.Items.Add(NewTaskTextBox.Text);
-            TaskListController.AddTask(TaskListController.CurrentTaskList, NewTaskTextBox.Text);
-
-            NewTaskTextBox.Text = string.Empty;
-            NewTaskTextBox.Focus();
-           
+                NewTaskTextBox.Text = string.Empty;
+                NewTaskTextBox.Focus();
+            }
         }
+
         private void AddTaskListButton_Click(Object sender, RoutedEventArgs e)
         {
-            TaskListController.AddTaskList("ababa");
+            TaskListController.AddTaskList("My List");
         }
         
-
         private void MarkTaskAsDoneButton_Click(Object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
-
             TextBlock textBlock = (TextBlock)((DockPanel)button.Parent).FindName("taskTextBlock");
             if(button != null)
             {
-                string str = textBlock.Text;
-
-                //TaskList.Items.Remove(item);
                 TaskListController.RemoveTask(textBlock.Text);
             }
 

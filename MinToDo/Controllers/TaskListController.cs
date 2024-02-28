@@ -13,18 +13,22 @@ namespace MinToDo.Controllers
     public class TaskListController: INotifyPropertyChanged
     {
         private TaskListRepository TaskListRepository { get; }
-        public TaskList CurrentTaskList;
+        public TaskList? CurrentTaskList;
+        public string CurrentTaskListTitle { get; set; }
 
         public TaskListController()
         {
             TaskListRepository = new();
-            TaskListTitles = new ObservableCollection<string>(TaskListRepository.GetLists().Select(taskList => taskList.Title));
             CurrentTaskList = TaskListRepository.GetLists().FirstOrDefault();
+
+            TaskListTitles = new ObservableCollection<string>(TaskListRepository.GetLists().Select(taskList => taskList.Title));
+
+            CurrentTaskListTaskTitles = new ObservableCollection<string>(CurrentTaskList.Tasks.Select(task => task.Title));
             UpdateCurrentTaskListTaskTitles(CurrentTaskList);
         }
 
-        public ObservableCollection <string> TaskListTitles {  get; set; }
-        public ObservableCollection <string> CurrentTaskListTaskTitles { get; set; }
+        public ObservableCollection <string>? TaskListTitles {  get; set; }
+        public ObservableCollection <string>? CurrentTaskListTaskTitles { get; set; }
 
         public void AddTaskList(string title)
         {
@@ -40,8 +44,9 @@ namespace MinToDo.Controllers
             Task newTask = new(title);
             TaskListRepository.AddTask(taskList, newTask);
             UpdateCurrentTaskListTaskTitles(taskList);
-
+            CurrentTaskListTaskTitles.Add(newTask.Title);
             OnPropertyChanged(nameof(CurrentTaskListTaskTitles));
+            
         }
 
         public void RemoveTask(string title)
@@ -56,10 +61,11 @@ namespace MinToDo.Controllers
 
         public void UpdateCurrentTaskListTaskTitles(TaskList currentList)
         {
-            CurrentTaskListTaskTitles = new ObservableCollection<string>(currentList.Tasks.Select(task => task.Title));
+            CurrentTaskListTitle = currentList.Title;
+           
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
