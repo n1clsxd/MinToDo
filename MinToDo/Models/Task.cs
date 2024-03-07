@@ -19,10 +19,11 @@ namespace MinToDo.Models
 
         }
 
-        public Task(string title)
+        public Task(string title = "")
         {
             Title = title;
         }
-        public Task() { }
+        
+        
     }
 }
