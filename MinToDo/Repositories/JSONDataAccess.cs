@@ -10,13 +10,13 @@ namespace MinToDo.Repositories
     public class JsonDataAccess
     {
         private readonly string? path;
-        private List<TaskList> taskLists;
+        public List<TaskList> TaskLists { get; private set; }
 
 
         public JsonDataAccess()
         {
             path = ConfigurationManager.AppSettings["JsonData"];   
-            taskLists = new List<TaskList>();
+            TaskLists = new List<TaskList>();
             InitializeTaskLists();
         }
 
@@ -35,29 +35,32 @@ namespace MinToDo.Repositories
                     JsonDocument jsonDocument = GetParsedJson(jsonString);
                     deserializedJson = JsonSerializer.Deserialize<List<TaskList>>(jsonDocument);
                 }
-                taskLists = deserializedJson!;
+                TaskLists = deserializedJson!;
             }
             catch (Exception)
             {
-                taskLists = new List<TaskList>() { TaskList.Default };
+                TaskLists = new List<TaskList>() { TaskList.Default };
             }
         }
-        public List<TaskList> GetLists()
-        {
-            return taskLists;
-        }
-        public void AddList(TaskList taskList) => taskLists.Add(taskList);
-        public void RemoveList(TaskList taskList) => taskLists.Remove(taskList);
+        public void AddList(TaskList taskList) => TaskLists.Add(taskList);
+        public void RemoveList(TaskList taskList) => TaskLists.Remove(taskList);
         public void AddTask(TaskList taskList, Task task) => taskList.Tasks.Add(task);
         public void RemoveTask(TaskList tasklist, Task task) => tasklist.Tasks.Remove(task);
-        public void Persist() => File.WriteAllText(path, JsonSerializer.Serialize(taskLists));
+
+
+
+        public void Persist()
+        {
+            File.WriteAllText(path, JsonSerializer.Serialize(TaskLists));
+        }
+
         private static string GetJsonString(string path)
         {
-            if (!File.Exists(path!))
+            if (!File.Exists(path))
             {
-                File.WriteAllText(path!, JsonSerializer.Serialize(new List<TaskList>() { TaskList.Default }));
+                File.WriteAllText(path, JsonSerializer.Serialize(new List<TaskList>() { TaskList.Default }));
             }
-            return File.ReadAllText(path!);
+            return File.ReadAllText(path);
         }
         private static JsonDocument GetParsedJson(string json)
         {

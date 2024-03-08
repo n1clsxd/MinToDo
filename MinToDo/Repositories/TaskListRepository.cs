@@ -20,7 +20,7 @@ namespace MinToDo.Repositories
         public List<TaskList> GetLists()
         {
 
-            return _JsonDataAccess.GetLists();
+            return _JsonDataAccess.TaskLists;
 
         }
         public void AddList(TaskList taskList)
