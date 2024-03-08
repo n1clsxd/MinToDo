@@ -24,6 +24,12 @@ namespace MinToDo.Models
             Tasks = new List<Task>();
         }
         
+        public TaskList()
+        {
+            Title = "";
+            Tasks = new();
+        }
+        
         public static readonly TaskList Default = new("MyList")
         {
             Tasks = new List<Task>()

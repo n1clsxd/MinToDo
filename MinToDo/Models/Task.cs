@@ -23,7 +23,11 @@ namespace MinToDo.Models
         {
             Title = title;
         }
-        
+
+        public Task()
+        {
+            Title = "";
+        }
         
     }
 }
