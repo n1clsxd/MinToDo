@@ -1,51 +1,43 @@
 ﻿using MinToDo.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MinToDo.Repositories
 {
     public class TaskListRepository
     {
-        private JsonDataAccess _JsonDataAccess { get; set; }
-        
+        private JsonDataAccess JsonDataAccess { get; set; }
+
         public TaskListRepository()
         {
-            _JsonDataAccess = new JsonDataAccess();
-            
-
+            JsonDataAccess = new JsonDataAccess();
         }
 
         public List<TaskList> GetLists()
         {
-
-            return _JsonDataAccess.TaskLists;
-
+            return JsonDataAccess.TaskLists;
         }
         public void AddList(TaskList taskList)
         {
-            _JsonDataAccess.AddList(taskList);
-            _JsonDataAccess.Persist();
+            JsonDataAccess.AddList(taskList);
+            JsonDataAccess.Persist();
         }
 
-        public void RemoveList(TaskList taskList) 
+        public void RemoveList(TaskList taskList)
         {
-            _JsonDataAccess.RemoveList(taskList);
-            _JsonDataAccess.Persist();
+            JsonDataAccess.RemoveList(taskList);
+            JsonDataAccess.Persist();
         }
 
         public void AddTask(TaskList taskList, Task task)
         {
-            _JsonDataAccess.AddTask(taskList, task);
-            _JsonDataAccess.Persist();
+            JsonDataAccess.AddTask(taskList, task);
+            JsonDataAccess.Persist();
         }
 
         public void RemoveTask(TaskList taskList, Task task)
         {
-            _JsonDataAccess.RemoveTask(taskList, task);
-            _JsonDataAccess.Persist();
+            JsonDataAccess.RemoveTask(taskList, task);
+            JsonDataAccess.Persist();
         }
-
     }
 }

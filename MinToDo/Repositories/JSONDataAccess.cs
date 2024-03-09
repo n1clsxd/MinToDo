@@ -51,8 +51,8 @@ namespace MinToDo.Repositories
 
         public void Persist()
         {
-            if(path is not null)
-            File.WriteAllText(path, JsonSerializer.Serialize(TaskLists));
+            if (path is not null)
+                File.WriteAllText(path, JsonSerializer.Serialize(TaskLists));
         }
 
         private static string GetJsonString(string path)
