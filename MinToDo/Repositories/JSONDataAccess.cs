@@ -15,14 +15,14 @@ namespace MinToDo.Repositories
 
         public JsonDataAccess()
         {
-            path = ConfigurationManager.AppSettings["JsonData"];   
+            path = ConfigurationManager.AppSettings["JsonData"];
             TaskLists = new List<TaskList>();
             InitializeTaskLists();
         }
 
         public void InitializeTaskLists()
         {
-            List<TaskList>? deserializedJson;
+            List<TaskList> deserializedJson;
             try
             {
                 if (path is null)
@@ -33,14 +33,14 @@ namespace MinToDo.Repositories
                 {
                     string jsonString = GetJsonString(path);
                     JsonDocument jsonDocument = GetParsedJson(jsonString);
-                    deserializedJson = JsonSerializer.Deserialize<List<TaskList>>(jsonDocument);
+                    deserializedJson = JsonSerializer.Deserialize<List<TaskList>>(jsonDocument) ?? new List<TaskList>() { TaskList.Default };
                 }
-                TaskLists = deserializedJson!;
             }
             catch (Exception)
             {
-                TaskLists = new List<TaskList>() { TaskList.Default };
+                deserializedJson = new List<TaskList>() { TaskList.Default };
             }
+            TaskLists = deserializedJson;
         }
         public void AddList(TaskList taskList) => TaskLists.Add(taskList);
         public void RemoveList(TaskList taskList) => TaskLists.Remove(taskList);
@@ -51,6 +51,7 @@ namespace MinToDo.Repositories
 
         public void Persist()
         {
+            if(path is not null)
             File.WriteAllText(path, JsonSerializer.Serialize(TaskLists));
         }
 
