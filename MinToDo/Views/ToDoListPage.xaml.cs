@@ -1,4 +1,5 @@
 ﻿using MinToDo.Controllers;
+using MinToDo.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,14 +22,13 @@ namespace MinToDo
     /// </summary>
     public partial class ToDoListPage : Page
     {
-        public TaskListController TaskListController { get; set; }
-
+        TaskListViewModel TaskListViewModel { get; set; }
 
         public ToDoListPage()
         {
-            TaskListController = new TaskListController();
-            DataContext = TaskListController;
-            //InitializeComponent();
+            InitializeComponent();
+            TaskListViewModel = new TaskListViewModel();
+            DataContext = TaskListViewModel;
             
         }
 
@@ -45,7 +45,7 @@ namespace MinToDo
         {
             if (NewTaskTextBox.Text != string.Empty)
             {
-                TaskListController.AddTask(TaskListController.CurrentTaskList, NewTaskTextBox.Text);
+                TaskListViewModel.AddTask(NewTaskTextBox.Text);
 
                 NewTaskTextBox.Text = string.Empty;
                 NewTaskTextBox.Focus();
@@ -54,7 +54,7 @@ namespace MinToDo
 
         private void AddTaskListButton_Click(Object sender, RoutedEventArgs e)
         {
-            TaskListController.AddTaskList("My List");
+            TaskListViewModel.AddTaskList();
         }
         
         private void MarkTaskAsDoneButton_Click(Object sender, RoutedEventArgs e)
@@ -63,7 +63,7 @@ namespace MinToDo
             TextBlock textBlock = (TextBlock)((DockPanel)button.Parent).FindName("taskTextBlock");
             if(button != null)
             {
-                TaskListController.RemoveTask(textBlock.Text);
+                TaskListViewModel.RemoveTask(textBlock.Text);
             }
 
         }

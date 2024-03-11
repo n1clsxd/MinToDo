@@ -12,7 +12,6 @@ namespace MinToDo.Repositories
         private readonly string? path;
         public List<TaskList> TaskLists { get; private set; }
 
-
         public JsonDataAccess()
         {
             path = ConfigurationManager.AppSettings["JsonData"];
@@ -42,13 +41,10 @@ namespace MinToDo.Repositories
             }
             TaskLists = deserializedJson;
         }
-        public void AddList(TaskList taskList) => TaskLists.Add(taskList);
-        public void RemoveList(TaskList taskList) => TaskLists.Remove(taskList);
+        public void AddTaskList(TaskList taskList) => TaskLists.Add(taskList);
+        public void RemoveTaskList(TaskList taskList) => TaskLists.Remove(taskList);
         public void AddTask(TaskList taskList, Task task) => taskList.Tasks.Add(task);
         public void RemoveTask(TaskList tasklist, Task task) => tasklist.Tasks.Remove(task);
-
-
-
         public void Persist()
         {
             if (path is not null)

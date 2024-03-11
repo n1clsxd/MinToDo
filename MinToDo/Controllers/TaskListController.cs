@@ -1,72 +1,41 @@
 ﻿using MinToDo.Models;
 using MinToDo.Repositories;
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace MinToDo.Controllers
 {
-    public class TaskListController: INotifyPropertyChanged
+    public class TaskListController
     {
-        private TaskListRepository TaskListRepository { get; }
-        public TaskList? CurrentTaskList;
-        public string CurrentTaskListTitle { get; set; }
-
+        private readonly TaskListRepository Repository;
         public TaskListController()
         {
-            TaskListRepository = new();
-            CurrentTaskList = TaskListRepository.GetLists().FirstOrDefault();
-
-            TaskListTitles = new ObservableCollection<string>(TaskListRepository.GetLists().Select(taskList => taskList.Title));
-
-            CurrentTaskListTaskTitles = new ObservableCollection<string>(CurrentTaskList.Tasks.Select(task => task.Title));
-            UpdateCurrentTaskListTaskTitles(CurrentTaskList);
+            Repository = new();
         }
-
-        public ObservableCollection <string>? TaskListTitles {  get; set; }
-        public ObservableCollection <string>? CurrentTaskListTaskTitles { get; set; }
-
+        public List<TaskList> GetTaskLists()
+        {
+            return Repository.GetTaskLists();
+        }
         public void AddTaskList(string title)
         {
             TaskList newList = new(title);
-            TaskListRepository.AddList(newList);
-            TaskListTitles.Add(newList.Title);
-
-            OnPropertyChanged(nameof(TaskListTitles));
+            Repository.AddTaskList(newList);
         }
-
+        public void RemoveTaskList(TaskList taskList)
+        {
+            if (taskList != null)
+                Repository.RemoveTaskList(taskList);
+        }
         public void AddTask(TaskList taskList, string title)
         {
             Task newTask = new(title);
-            TaskListRepository.AddTask(taskList, newTask);
-            UpdateCurrentTaskListTaskTitles(taskList);
-            CurrentTaskListTaskTitles.Add(newTask.Title);
-            OnPropertyChanged(nameof(CurrentTaskListTaskTitles));
-            
+            Repository.AddTask(taskList, newTask);
         }
-
-        public void RemoveTask(string title)
+        public void RemoveTask(TaskList taskList, string title)
         {
-            //CurrentTaskList.Tasks.Remove();
-            TaskListRepository?.RemoveTask(CurrentTaskList, CurrentTaskList.Tasks.FirstOrDefault(task => task.Title == title));
-            CurrentTaskListTaskTitles.Remove(title);
-            OnPropertyChanged(nameof(CurrentTaskListTaskTitles));
+            Task? task = taskList.Tasks.FirstOrDefault(task => task.Title == title);
+            if (task != null)
+                Repository?.RemoveTask(taskList, task);
         }
-
-
-
-        public void UpdateCurrentTaskListTaskTitles(TaskList currentList)
-        {
-            CurrentTaskListTitle = currentList.Title;
-           
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

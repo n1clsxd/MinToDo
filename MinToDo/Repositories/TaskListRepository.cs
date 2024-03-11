@@ -11,29 +11,25 @@ namespace MinToDo.Repositories
         {
             JsonDataAccess = new JsonDataAccess();
         }
-
-        public List<TaskList> GetLists()
+        public List<TaskList> GetTaskLists()
         {
             return JsonDataAccess.TaskLists;
         }
-        public void AddList(TaskList taskList)
+        public void AddTaskList(TaskList taskList)
         {
-            JsonDataAccess.AddList(taskList);
+            JsonDataAccess.AddTaskList(taskList);
             JsonDataAccess.Persist();
         }
-
-        public void RemoveList(TaskList taskList)
+        public void RemoveTaskList(TaskList taskList)
         {
-            JsonDataAccess.RemoveList(taskList);
+            JsonDataAccess.RemoveTaskList(taskList);
             JsonDataAccess.Persist();
         }
-
         public void AddTask(TaskList taskList, Task task)
         {
             JsonDataAccess.AddTask(taskList, task);
             JsonDataAccess.Persist();
         }
-
         public void RemoveTask(TaskList taskList, Task task)
         {
             JsonDataAccess.RemoveTask(taskList, task);
