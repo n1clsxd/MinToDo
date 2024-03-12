@@ -14,6 +14,8 @@ namespace MinToDo.ViewModels
         public ObservableCollection<string> TaskListTitles { get; set; }
         public ObservableCollection<string> CurrentTaskListTaskTitles { get; set; }
 
+        public string? CurrentTaskListTitle => CurrentTaskList?.Title;
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public TaskListViewModel()
@@ -37,6 +39,14 @@ namespace MinToDo.ViewModels
 
         protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        public void UpdateCurrentTaskList(string title)
+        {
+            CurrentTaskList = TaskListController.GetTaskLists().FirstOrDefault(task => task.Title == title);
+            OnPropertyChanged(nameof(CurrentTaskList));
+            OnPropertyChanged(nameof(CurrentTaskListTitle));
+            CurrentTaskListTaskTitles = new ObservableCollection<string>(CurrentTaskList!.Tasks.Select(task => task.Title));
+            OnPropertyChanged(nameof(CurrentTaskListTaskTitles));
+        }
         public void AddTaskList(string title = "MyList")
         {
             TaskListController.AddTaskList(title);

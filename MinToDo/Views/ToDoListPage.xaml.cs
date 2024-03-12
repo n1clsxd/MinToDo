@@ -1,4 +1,5 @@
 ﻿using MinToDo.Controllers;
+using MinToDo.Models;
 using MinToDo.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -26,9 +27,9 @@ namespace MinToDo
 
         public ToDoListPage()
         {
-            InitializeComponent();
             TaskListViewModel = new TaskListViewModel();
             DataContext = TaskListViewModel;
+            InitializeComponent();
             
         }
 
@@ -65,6 +66,12 @@ namespace MinToDo
             {
                 TaskListViewModel.RemoveTask(textBlock.Text);
             }
+
+        }
+        private void TaskListsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListBox listBox = (ListBox)sender;
+            TaskListViewModel.UpdateCurrentTaskList(listBox.SelectedItem.ToString());
 
         }
     }
