@@ -51,6 +51,20 @@ namespace MinToDo.ViewModels
         }
         public void AddTaskList(string title = "MyList")
         {
+            if (TaskListTitles.Contains(title))
+            {
+                for (int i = 0; i < TaskListTitles.Count; i++)
+                {
+                    if (!TaskListTitles.Contains(title + $"{i+1}"))
+                    {
+                        title += $"{i+1}";
+                        break;
+                    }
+                }
+
+            }
+            
+
             TaskListController.AddTaskList(title);
             TaskListTitles.Add(title);
         }
