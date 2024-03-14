@@ -19,12 +19,14 @@ namespace MinToDo.Controllers
         public void AddTaskList(string title)
         {
             TaskList newList = new(title);
+
             Repository.AddTaskList(newList);
         }
-        public void RemoveTaskList(TaskList taskList)
+        public void RemoveTaskList(string title)
         {
+            TaskList? taskList = GetTaskLists().FirstOrDefault(taskList => taskList.Title == title);
             if (taskList != null)
-                Repository.RemoveTaskList(taskList);
+                Repository?.RemoveTaskList(taskList);
         }
         public void AddTask(TaskList taskList, string title)
         {
@@ -37,5 +39,7 @@ namespace MinToDo.Controllers
             if (task != null)
                 Repository?.RemoveTask(taskList, task);
         }
+
+
     }
 }

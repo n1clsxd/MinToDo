@@ -71,8 +71,17 @@ namespace MinToDo
         private void TaskListsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBox listBox = (ListBox)sender;
-            TaskListViewModel.UpdateCurrentTaskList(listBox.SelectedItem.ToString());
+            TaskListViewModel.UpdateCurrentTaskList(listBox.SelectedItem?.ToString());
 
+        }
+
+        private void RemoveTaskList_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = (MenuItem)sender;
+            ContextMenu = (ContextMenu)menuItem.Parent;
+
+            ListBox listBox = (ListBox)ContextMenu.PlacementTarget;
+            TaskListViewModel.RemoveTaskList(listBox.SelectedItem.ToString());
         }
     }
 }

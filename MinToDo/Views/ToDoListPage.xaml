@@ -14,6 +14,14 @@
                 <RowDefinition Height="40"></RowDefinition>
             </Grid.RowDefinitions>
             <ListBox Margin="2" Padding ="2" d:ItemsSource="{d:SampleData ItemCount=60}" SelectionChanged="TaskListsListBox_SelectionChanged">
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Delete" Click="RemoveTaskList_Click">
+
+                        </MenuItem>
+                    </ContextMenu>
+
+                </ListBox.ContextMenu>
                 <ListBox.ItemsSource>
                     <Binding Path="TaskListTitles"/>
                 </ListBox.ItemsSource>

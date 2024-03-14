@@ -41,7 +41,9 @@ namespace MinToDo.ViewModels
 
         public void UpdateCurrentTaskList(string title)
         {
-            CurrentTaskList = TaskListController.GetTaskLists().FirstOrDefault(task => task.Title == title);
+            var taskLists = TaskListController.GetTaskLists();
+            CurrentTaskList = taskLists.FirstOrDefault(task => task.Title == title) ?? taskLists.First();
+
             OnPropertyChanged(nameof(CurrentTaskList));
             OnPropertyChanged(nameof(CurrentTaskListTitle));
             CurrentTaskListTaskTitles = new ObservableCollection<string>(CurrentTaskList!.Tasks.Select(task => task.Title));
@@ -63,5 +65,15 @@ namespace MinToDo.ViewModels
             TaskListController.RemoveTask(CurrentTaskList, title);
             CurrentTaskListTaskTitles.Remove(title);
         }
+
+        public void RemoveTaskList(string title)
+        {
+            if (TaskListTitles.Count > 1)
+            {
+                TaskListController.RemoveTaskList(title);
+                TaskListTitles.Remove(title);
+            }
+        }
+
     }
 }
