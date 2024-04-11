@@ -1,5 +1,7 @@
 ﻿using MinToDo.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MinToDo.Repositories
 {
@@ -11,9 +13,17 @@ namespace MinToDo.Repositories
         {
             JsonDataAccess = new JsonDataAccess();
         }
+        public void PersistData()
+        {
+            JsonDataAccess.Persist();
+        }
         public List<TaskList> GetTaskLists()
         {
             return JsonDataAccess.TaskLists;
+        }
+        public TaskList? GetTaskList(TaskList taskList)
+        {
+            return JsonDataAccess.TaskLists.Find(tl => tl.Title == taskList.Title);
         }
         public void AddTaskList(TaskList taskList)
         {

@@ -81,7 +81,36 @@ namespace MinToDo
             ContextMenu = (ContextMenu)menuItem.Parent;
 
             ListBox listBox = (ListBox)ContextMenu.PlacementTarget;
-            TaskListViewModel.RemoveTaskList(listBox.SelectedItem.ToString());
+            TaskListViewModel.RemoveTaskList(TaskListViewModel.CurrentTaskListTitle.ToString());
+        }
+        
+        private void RenameTaskListPopup_Click(object sender, RoutedEventArgs e)
+        {
+            PopUpOriginTaskList = TaskListViewModel.CurrentTaskList;
+            RenameTaskListPopup.IsOpen = true;
+        }
+        private TaskList PopUpOriginTaskList;
+        private void RenameTaskList_Click(Object sender, RoutedEventArgs e)
+        {
+            RenameTaskList();
+        }
+
+        private void RenameTaskList_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                RenameTaskList();
+            }
+        }
+        private void RenameTaskList()
+        {
+            string input = renameTaskListPopupTextInput.Text;
+            if (input != "")
+            {
+                TaskListViewModel.RenameTaskList(PopUpOriginTaskList.Title, input);
+                renameTaskListPopupTextInput.Text = "";
+                RenameTaskListPopup.IsOpen = false;
+            }
         }
     }
 }

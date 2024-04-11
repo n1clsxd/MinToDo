@@ -28,6 +28,15 @@ namespace MinToDo.Controllers
             if (taskList != null)
                 Repository?.RemoveTaskList(taskList);
         }
+        public void RenameTaskList(string title, string newName)
+        {
+            var tasklist = Repository.GetTaskLists().Find(taskList => taskList.Title == title);
+            if(tasklist != null)
+            {
+                tasklist.Title = newName;
+            }
+            Repository.PersistData();
+        }
         public void AddTask(TaskList taskList, string title)
         {
             Task newTask = new(title);

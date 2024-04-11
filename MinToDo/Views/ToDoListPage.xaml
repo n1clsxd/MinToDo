@@ -6,57 +6,67 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="test">
+    <Grid>
+        <DockPanel>
+            <Grid Margin ="5,45,5,5" Width="200">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                </Grid.RowDefinitions>
+                <ListBox Margin="2" Padding ="2" d:ItemsSource="{d:SampleData ItemCount=60}" SelectionChanged="TaskListsListBox_SelectionChanged">
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Remove" Click="RemoveTaskList_Click"/>
+                            <MenuItem Header="Rename" Click="RenameTaskListPopup_Click"/>
+                        </ContextMenu>
 
-    <DockPanel>
-        <Grid Margin ="5,45,5,5" Width="200">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="40"></RowDefinition>
-            </Grid.RowDefinitions>
-            <ListBox Margin="2" Padding ="2" d:ItemsSource="{d:SampleData ItemCount=60}" SelectionChanged="TaskListsListBox_SelectionChanged">
-                <ListBox.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Delete" Click="RemoveTaskList_Click">
-
-                        </MenuItem>
-                    </ContextMenu>
-
-                </ListBox.ContextMenu>
-                <ListBox.ItemsSource>
-                    <Binding Path="TaskListTitles"/>
-                </ListBox.ItemsSource>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock FontSize="15" Margin="0,0,0,3" Text="{Binding}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <Button Margin ="2" Grid.Row="1" FontSize="18" Click ="AddTaskListButton_Click">New List</Button>
-        </Grid>
-        <Grid Margin ="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="60"></RowDefinition>
-            </Grid.RowDefinitions>
-            <TextBlock Text ="{Binding CurrentTaskListTitle}" Margin="2" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
-            <ListBox x:Name="TaskList" Margin="2" Padding ="2" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalContentAlignment="Stretch">
-                <ListBox.ItemsSource>
-                    <Binding Path="CurrentTaskListTaskTitles"/>
-                </ListBox.ItemsSource>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <DockPanel LastChildFill="False">
-                            <TextBlock x:Name="taskTextBlock" Text="{Binding}" FontSize="20" Padding="0,10,0,10"/>
-                            <Button FontSize="20" Width="30" Height="30" DockPanel.Dock="Right" VerticalContentAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Click="MarkTaskAsDoneButton_Click" Margin="0,0,8,0">✓</Button>
-                        </DockPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <DockPanel Margin="2" Grid.Row="2">
-                <Button x:Name="AddTaskButton" DockPanel.Dock="Right" Width="100" FontSize="18" Click="AddTaskButton_Click">Add</Button>
-                <TextBox x:Name="NewTaskTextBox" FontSize="16" Margin="0,0,3,0" Padding="4" KeyDown="NewTaskTextBox_KeyDown"></TextBox>
-            </DockPanel>
-        </Grid>
-    </DockPanel>
+                    </ListBox.ContextMenu>
+                    <ListBox.ItemsSource>
+                        <Binding Path="TaskListTitles"/>
+                    </ListBox.ItemsSource>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock x:Name="a" FontSize="15" Margin="0,0,0,3" Text="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Button Margin ="2" Grid.Row="1" FontSize="18" Click ="AddTaskListButton_Click">New List</Button>
+            </Grid>
+            <Grid Margin ="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="60"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Text ="{Binding CurrentTaskListTitle}" Margin="2" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                <ListBox x:Name="TaskList" Margin="2" Padding ="2" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalContentAlignment="Stretch">
+                    <ListBox.ItemsSource>
+                        <Binding Path="CurrentTaskListTaskTitles"/>
+                    </ListBox.ItemsSource>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel LastChildFill="False">
+                                <TextBlock x:Name="taskTextBlock" Text="{Binding}" FontSize="20" Padding="0,10,0,10"/>
+                                <Button FontSize="20" Width="30" Height="30" DockPanel.Dock="Right" VerticalContentAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Click="MarkTaskAsDoneButton_Click" Margin="0,0,8,0">✓</Button>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <DockPanel Margin="2" Grid.Row="2">
+                    <Button x:Name="AddTaskButton" DockPanel.Dock="Right" Width="100" FontSize="18" Click="AddTaskButton_Click">Add</Button>
+                    <TextBox x:Name="NewTaskTextBox" FontSize="16" Margin="0,0,3,0" Padding="4" KeyDown="NewTaskTextBox_KeyDown"></TextBox>
+                </DockPanel>
+            </Grid>
+        </DockPanel>
+        <Popup x:Name="RenameTaskListPopup" IsOpen="False" Placement="Center">
+            <Grid Background="LightGray" Width="200" Height="100">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBox x:Name="renameTaskListPopupTextInput" Grid.Row="0" Margin="5" FontSize="16" Height="26" KeyDown="RenameTaskList_KeyDown"/>
+                <Button Content="Confirm" Grid.Row="1" Margin="5" Click="RenameTaskList_Click"/>
+            </Grid>
+        </Popup>
+    </Grid>
 </Page>

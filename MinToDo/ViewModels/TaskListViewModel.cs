@@ -49,26 +49,6 @@ namespace MinToDo.ViewModels
             CurrentTaskListTaskTitles = new ObservableCollection<string>(CurrentTaskList!.Tasks.Select(task => task.Title));
             OnPropertyChanged(nameof(CurrentTaskListTaskTitles));
         }
-        public void AddTaskList(string title = "MyList")
-        {
-            if (TaskListTitles.Contains(title))
-            {
-                for (int i = 0; i < TaskListTitles.Count; i++)
-                {
-                    if (!TaskListTitles.Contains(title + $"{i+1}"))
-                    {
-                        title += $"{i+1}";
-                        break;
-                    }
-                }
-
-            }
-            
-
-            TaskListController.AddTaskList(title);
-            TaskListTitles.Add(title);
-        }
-
         public void AddTask(string title = "NewTask")
         {
             TaskListController.AddTask(CurrentTaskList, title);
@@ -79,7 +59,12 @@ namespace MinToDo.ViewModels
             TaskListController.RemoveTask(CurrentTaskList, title);
             CurrentTaskListTaskTitles.Remove(title);
         }
-
+        public void AddTaskList(string title = "MyList")
+        {
+            title = NameTaskList(title);
+            TaskListController.AddTaskList(title);
+            TaskListTitles.Add(title);
+        }
         public void RemoveTaskList(string title)
         {
             if (TaskListTitles.Count > 1)
@@ -88,6 +73,37 @@ namespace MinToDo.ViewModels
                 TaskListTitles.Remove(title);
             }
         }
+        
+        public string NameTaskList(string title)
+        {
+            if (TaskListTitles.Contains(title))
+            {
+                for (int i = 0; i < TaskListTitles.Count; i++)
+                {
+                    if (!TaskListTitles.Contains(title + $"{i + 1}"))
+                    {
+                        title += $"{i + 1}";
+                        break;
+                    }
+                }
+            }
+            return title;
+        }
 
+        public void RenameTaskList(string title, string newName)
+        {
+            TaskListController.RenameTaskList(title, NameTaskList(newName));
+            int index = TaskListTitles.IndexOf(title);
+            if (index != -1)
+            {
+                TaskListTitles[index] = newName;
+            }
+            CurrentTaskList = TaskListController.GetTaskLists().Find(t => t.Title == TaskListTitles[index].ToString());
+            OnPropertyChanged(nameof(CurrentTaskList));
+            OnPropertyChanged(nameof(CurrentTaskListTitle));
+            OnPropertyChanged(nameof(TaskListTitles));
+            CurrentTaskListTaskTitles = new ObservableCollection<string>(CurrentTaskList!.Tasks.Select(task => task.Title));
+            OnPropertyChanged(nameof(CurrentTaskListTaskTitles));
+        }
     }
 }
