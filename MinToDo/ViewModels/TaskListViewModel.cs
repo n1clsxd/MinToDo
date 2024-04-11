@@ -92,11 +92,12 @@ namespace MinToDo.ViewModels
 
         public void RenameTaskList(string title, string newName)
         {
-            TaskListController.RenameTaskList(title, NameTaskList(newName));
+            var newTitle = NameTaskList(newName);
+            TaskListController.RenameTaskList(title, newTitle);
             int index = TaskListTitles.IndexOf(title);
             if (index != -1)
             {
-                TaskListTitles[index] = newName;
+                TaskListTitles[index] = newTitle;
             }
             CurrentTaskList = TaskListController.GetTaskLists().Find(t => t.Title == TaskListTitles[index].ToString());
             OnPropertyChanged(nameof(CurrentTaskList));
