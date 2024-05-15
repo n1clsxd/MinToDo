@@ -2,12 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 
 namespace MinToDo.Repositories
 {
+    /// <summary>
+    /// Provide methods for reading and writing data from objects to the JSON defined data storage.
+    /// </summary>
     public class JsonDataAccess
     {
         private readonly string? path;
